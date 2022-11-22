@@ -5,3 +5,5 @@
 2. No, this would be done using unit tests instead. Because end-to-end tests would not test for function outputs.
 3. no, because a unit test does not test for the interactions that occurs between components on an application or feature level.
 4. yes, because unit testing tests for the outputs of smaller functions of the bigger program.
+
+[screen Shot](screenshot.png)

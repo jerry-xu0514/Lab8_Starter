@@ -65,8 +65,8 @@ describe('Basic user flow for Website', () => {
   // number in the top right has been correctly updated
   it('Checking number of items in cart on screen', async () => {
     console.log('Checking number of items in cart on screen...');
-    const prodItem = await page.$$('product-item');
-    for(var i = 1; i <numProducts; i++){
+    const prodItems = await page.$$('product-item');
+    for(var i = 1; i < prodItems.length; i++){
       sRoot = await prodItems[i].getProperty('shadowRoot');
       let button = await sRoot.$('button');
       await button.click();
@@ -87,20 +87,20 @@ describe('Basic user flow for Website', () => {
   it('Checking number of items in cart on screen after reload', async () => {
     console.log('Checking number of items in cart on screen after reload...');
     await page.reload();
-    const prodItem = await page.$$('product-item');
+    const prodItems = await page.$$('product-item');
 
-    for (var i = 0; i < prodItem.length; i++){
+    for (var i = 0; i < prodItems.length; i++){
       let sRoot = await prodItems[i].getProperty('shadowRoot');
       let button = await sRoot.$('button');
       let buttonInnerTexxt = await button.getProperty('innerText');
       let buttonValue = await buttonInnerTexxt.jsonValue();
-      expect(buttonValue).toBe('Remove from cart');
+      expect(buttonValue).toBe('Remove from Cart');
 
     }
     const cartCount = await page.$('#cart-count');
-    const inText = await cartCount.getproperty('innerText');
-    let val = await inText.jsonValue();
-    expect(val).toBe('20');
+    const innerText = await cartCount.getProperty('innerText');
+    let tValue = await innerText.jsonValue();
+    expect(tValue).toBe('20'); 
     // TODO - Step 4
     // Reload the page, then select all of the <product-item> elements, and check every
     // element to make sure that all of their buttons say "Remove from Cart".
@@ -109,7 +109,7 @@ describe('Basic user flow for Website', () => {
 
   // Check to make sure that the cart in localStorage is what you expect
   it('Checking the localStorage to make sure cart is correct', async () => {
-    let cart = await page.evalutate(() => {
+    let cart = await page.evaluate(() => {
       return localStorage.getItem('cart');
     });
     expect(cart).toBe('[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]');
@@ -117,6 +117,7 @@ describe('Basic user flow for Website', () => {
     // At this point he item 'cart' in localStorage should be 
     // '[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]', check to make sure it is
   });
+
 
   // Checking to make sure that if you remove all of the items from the cart that the cart
   // number in the top right of the screen is 0
@@ -132,7 +133,7 @@ describe('Basic user flow for Website', () => {
 
     const cartCount = await page.$('#cart-count');
     const innerText = await cartCount.getProperty('innerText');
-    let val = await inText.jsonValue();
+    let val = await innerText.jsonValue();
 
     expect(val).toBe('0');
     // TODO - Step 6
@@ -146,8 +147,9 @@ describe('Basic user flow for Website', () => {
     console.log('Checking number of items in cart on screen after reload...');
     await page.reload();
     const productItems = await page.$$('product-item');
+    const prodItems = await page.$$('product-item');
     for(var i = 0; i < prodItems.length; i++){
-      let sRoot = await ProdItems[i].getProperty('shadowRoot)');
+      let sRoot = await prodItems[i].getProperty('shadowRoot');
       let button = await sRoot.$('button');
       let buttonInnerTexxt = await button.getProperty('innerText');
       let buttonValue = await buttonInnerTexxt.jsonValue();
@@ -156,7 +158,7 @@ describe('Basic user flow for Website', () => {
 
     const cartCount = await page.$('#cart-count');
     const innerText = await cartCount.getProperty('innerText');
-    let val = await inText.jsonValue();
+    let val = await innerText.jsonValue();
     expect(val).toBe('0');
     // TODO - Step 7
     // Reload the page once more, then go through each <product-item> to make sure that it has remembered nothing
